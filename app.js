@@ -4,7 +4,7 @@
             var result = "凶"; // デフォルトの値
 
             if (colour === "黒" && number === 0) {
-                result = "小吉";
+                result = "吉";
             } else if (colour === "黒" && number === 1) {
                 result = "中吉";
             } else if (colour === "黒" && number === 2) {

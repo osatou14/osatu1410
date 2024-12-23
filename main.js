@@ -96,11 +96,3 @@ const clickHandler = (e) => {
   window.alert('終了！あなたの正解数は' + score + '/' + quizLength + 'です！');
  }
 }
-
-
-
-
-
-
-
-

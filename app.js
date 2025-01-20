@@ -87,7 +87,6 @@ while(handlerIndex < buttonLength) {
  handlerIndex++;
 }
 {
-  ...
   quizIndex++;
   if (quizIndex < quizLength) {
     setupQuiz();

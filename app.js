@@ -68,7 +68,6 @@ const setupQuiz = () => {
 }
  
 setupQuiz();
-
 const clickHandler = (e) => {
  if (quiz[quizIndex].correct === e.target.textContent) {
    window.alert("正解！");
@@ -87,11 +86,12 @@ while(handlerIndex < buttonLength) {
  });
  handlerIndex++;
 }
-
-
+const clickHandler = (e) => {
+  ...
   quizIndex++;
   if (quizIndex < quizLength) {
     setupQuiz();
  } else {
   window.alert('終了！あなたの正解数は' + score + '/' + quizLength + 'です！');
  }
+}

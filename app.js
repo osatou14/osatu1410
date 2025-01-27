@@ -1,5 +1,4 @@
-
-.quiz {
+quiz {
   min-height: 100vh;
   padding: 100px 0;
   background: #fff5db;

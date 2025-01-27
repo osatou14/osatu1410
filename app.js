@@ -135,7 +135,7 @@ while(handlerIndex < buttonLength) {
  });
  handlerIndex++;
 }
-const clickHandler = (e) => {
+const handleClick = (e) => {
   ...
   quizIndex++;
   if (quizIndex < quizLength) {

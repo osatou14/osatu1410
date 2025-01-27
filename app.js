@@ -136,7 +136,6 @@ while(handlerIndex < buttonLength) {
  handlerIndex++;
 }
 const handleClick = (e) => {
-  ...
   quizIndex++;
   if (quizIndex < quizLength) {
     setupQuiz();

@@ -1,59 +1,147 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head><link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>QuizJS</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>石川クイズ</title>
+    <script>
+        let Q = [//クイズ
+            ['Q.金沢市にある日本三名園は「兼六園」である', ' onclick="Q_(1);" >〇', ' onclick="Q_(2);" >×',
+             '正解は「〇」！</br>金沢市の中心部に位置する兼六園は、季節を彩る花々を眺めながら散策を楽しむのがおすすめです。'],
+            ['Q.石川県の伝統的工芸品の中に「輪島塗」がある', ' onclick="Q_(1);" >〇', ' onclick="Q_(2);" >×',
+             '正解は「〇」<br/>輪島でとれる「地の粉」を下地に塗り、何度も漆を塗っては研くことで丈夫な仕上がりになります。'],
+            ['Q.石川県で最も高い山は「別山」である。', ' onclick="Q_(2);" >〇', ' onclick="Q_(1);" >×',
+             '正解は「×」</br>最も高い山は「白山」です。富士山、立山と並ぶ日本三名山の一つで、2,702mあります。日帰りでも登ることが可能です。'],
+            ['Q.石川県の代表的な祭りの金沢百万石まつりは、加賀藩主前田利家の入城を祝う祭りである', ' onclick="Q_(1);" >〇', ' onclick="Q_(2);" >×',
+             '正解は「〇」</br>毎年６月に開催される金沢最大のイベントです。メインイベントの「百万石行列」は、海外からも多くの人が見物に訪れます。'],
+            ['Q.石川県の粟津温泉・片山津温泉・山代温泉・山中温泉の総称を「金沢温泉郷」という', ' onclick="Q_(2);" >〇', ' onclick="Q_(1);" >×',
+             '正解は「×」</br>正解は「加賀温泉郷」です。金沢から南に約40mの南加賀地域にある温泉地で、それぞれ異なる泉質や雰囲気を楽しむことができます。'],
+            ['Q.石川県の日本海に面した半島は能登半島である。', ' onclick="Q_(1);" >〇', ' onclick="Q_(2);" >×',
+             '正解は「〇」</br>能登半島は日本海に大きく突き出しており、変化に富んだ美しい景観が楽しめる景勝地です。'],
+            ['Q.石川県ではお正月に買う鏡餅は、紅×白である', ' onclick="Q_(1);" >〇', ' onclick="Q_(2);" >×',
+             '正解は「〇」</br>石川県の和菓子店やスーパーには紅白が並びます。上段が紅、下段が白だった前田家の鏡餅に対し、町人が真似をしたとされています。'],
+            ['Q.石川県の特産品である「加賀棒茶」は、１度雪を被った茶葉を焙じる。', ' onclick="Q_(2);" >〇', ' onclick="Q_(1);" >×',
+             '正解は「×」</br>加賀棒茶は新茶の茎を浅く焙じて作るのが特徴です。すっきりとした飲み心地で、季節を問わず楽しむことができます。'],
+            ['Q.金沢城の別名に「白鳥城」がある', ' onclick="Q_(2);" >〇', ' onclick="Q_(1);" >×',
+             '正解は「×」</br>別名は尾山城、尾上城、金城があります。金沢城は季節によって開園時間が異なるので、訪れる際は要チェックです。'],
+            ['Q.能登半島は車で２時間程度で１周することができる', ' onclick="Q_(2);" >〇', ' onclick="Q_(1);" >×',
+             '正解は「×」</br>能登半島は1周約300kmあり、車で4時間半以上かかります。しかし、公共交通機関よりもレンタカーを利用する方が便利です。'],
+        ];
+
+        let quizCount = 0; // 回答回数
+        let correctCount = 0; // 正解数
+        let incorrectQuestions = []; // 誤答した問題を保持する配列
+        let selectedQuestion; // 現在の問題
+
+        //初期表示
+        window.onload = function() {
+            showQuestion();
+        }
+        
+        //次の問題を表示するためのプログラム
+        function Q_(oxq) {
+            if (oxq === 0) {
+                if (Q.length === 0) {
+                    // 問題がなくなった場合
+                    showResult();
+                } else {
+                    // ランダムで問題を選択
+                    let randomIndex = Math.floor(Math.random() * Q.length);
+                    selectedQuestion = Q[randomIndex];
+
+                    document.getElementById("ox").innerHTML = '';
+                    document.getElementById("quiz").innerHTML = '';
+
+                    let quiz = document.getElementById('quiz');
+                    quiz.insertAdjacentHTML('afterbegin', '<p>' + selectedQuestion[0] + '</p>');
+                    quiz.insertAdjacentHTML('beforeend', '<button' + selectedQuestion[1] + '</button>');
+                    quiz.insertAdjacentHTML('beforeend', '<button' + selectedQuestion[2] + '</button><br/>');
+
+                    // 選択された問題を削除
+                    Q.splice(randomIndex, 1);
+                }
+            } else if (oxq === 1) {
+                correctCount++;
+                document.getElementById("ox").innerHTML = '<p class="true">正解！</p>';
+                document.getElementById("quiz").innerHTML = '<p>' + selectedQuestion[3] + '</p>';
+                quizCount++;
+                if (quizCount < 10) {
+                    document.getElementById("next").innerHTML = '<p><button onClick="Q_(0);">次の問題へ</button></p>';
+                } else {
+                    showResult();
+                }
+            } else if (oxq === 2) {
+                incorrectQuestions.push(selectedQuestion);
+                document.getElementById("ox").innerHTML = '<p class="false">不正解！</p>';
+                document.getElementById("quiz").innerHTML = '<p>' + selectedQuestion[3] + '</p>';
+                quizCount++;
+                if (quizCount < 10) {
+                    document.getElementById("next").innerHTML = '<p><button onClick="Q_(0);">次の問題へ</button></p>';
+                } else {
+                    showResult();
+                }
+            }
+        }
+
+        function showResult() {
+            document.getElementById("ox").innerHTML = '<p class="end">終了！</br>おつかれさまでした！</p>';
+            document.getElementById("quiz").innerHTML = '<p>正解数: ' + correctCount + '/10</p>';
+
+            if (incorrectQuestions.length > 0) {
+                document.getElementById("quiz").innerHTML += '<p>誤答した問題:</p>';
+                document.getElementById("quiz").innerHTML += '<ul>';
+                incorrectQuestions.forEach(function (question) {
+                    document.getElementById("quiz").innerHTML += '<li>' + question[0] + '</li>';
+                });
+                document.getElementById("quiz").innerHTML += '</ul>';
+            }
+
+            document.getElementById("next").innerHTML = '';
+        }
+
+        // 最初の問題を表示する関数
+        function showQuestion() {
+            if (Q.length === 0) {
+                // 問題がなくなった場合
+                showResult();
+            } else {
+                // ランダムで問題を選択
+                let randomIndex = Math.floor(Math.random() * Q.length);
+                selectedQuestion = Q[randomIndex];
+
+                document.getElementById("ox").innerHTML = '';
+                document.getElementById("quiz").innerHTML = '';
+
+                let quiz = document.getElementById('quiz');
+                quiz.insertAdjacentHTML('afterbegin', '<p>' + selectedQuestion[0] + '</p>');
+                quiz.insertAdjacentHTML('beforeend', '<button' + selectedQuestion[1] + '</button>');
+                quiz.insertAdjacentHTML('beforeend', '<button' + selectedQuestion[2] + '</button><br/>');
+
+                // 選択された問題を削除
+                Q.splice(randomIndex, 1);
+            }
+        }
+    </script>
 </head>
 <body>
- <main class="quiz">
-  <div class="inner-block">
- 
-    <div class="quiz-content">
- 
-      <div class="finish">
-        <div class="score-wrap">
-          <span class="score">0</span>
-          <span class="ja">点</span>
-          <span class="full">／50点</span>
-        </div>
-        <a href="/" class="goback-button">最初からやり直す</a>
-      </div>
- 
-      <div class="quiz-question-number"></div>
-      <h2 class="quiz-question"></h2>
- 
-      <ul class="quiz-answer">
-        <li>
-        <label class="quiz-button button01">
-          <input name="radio" type="radio" value="">
-          <span class="quiz-text01"></span>
-        </label>
-        </li>
-        <li>
-          <label class="quiz-button button02">
-            <input name="radio" type="radio" value="">
-            <span class="quiz-text02"></span>
-          </label>
-        </li>
-        <li>
-          <label class="quiz-button button03">
-            <input name="radio" type="radio" value="">
-            <span class="quiz-text03"></span>
-          </label>
-        </li>
-        <li>
-          <label class="quiz-button button04">
-            <input name="radio" type="radio" value="">
-            <span class="quiz-text04"></span>
-          </label>
-        </li>
-      </ul>
-    </div>
-  </div>
-</main> 
+<div class="inner-block">
+    <h1>石川クイズ</h1>
+
+    <script>
+        document.write('<p class="seifu" id="ox"></p>');
+
+        document.write('<p class="qu" id="quiz">');
+        document.write('<button class="bott1"' + Q[0][1] + '</button>');
+        document.write('<button class="bott2"' + Q[0][2] + '</button><br/>');
+        document.write('</p>');
+
+        document.write('<p class="next" id="next"><button onClick="Q_(0);">次の問題へ</button></p>');
+    </script>
+</div>
+</body>
+</html>
+
     <script src="app.js"></script>
 </body>
 </html>
